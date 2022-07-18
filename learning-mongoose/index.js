@@ -27,7 +27,16 @@ async function dbOperation(){
   try{
     const student  = await Student.create({
          name : "Vishwa",
-         age : 99
+         age : 99,
+         country : "India" , // This field get's ignored
+         address : {
+             lane1 : "l1",
+             lane2 : "l2",
+             street : "Bellandur",
+             city : "Banaglore",
+             country : "India",
+             pinCode :560103
+         }
     });
 
     /**
