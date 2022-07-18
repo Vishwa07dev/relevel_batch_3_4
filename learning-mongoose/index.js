@@ -9,6 +9,7 @@ console.log(typeof mongoose);
 
 /**
  * Try making a connection to the mongoDB
+ * mongodb://127.0.0.1/mdemo
  */
 mongoose.connect("mongodb://localhost/mdemo", ()=>{
     console.log("Connected to Mongo DB");
@@ -28,6 +29,13 @@ async function dbOperation(){
          name : "Vishwa",
          age : 99
     });
+
+    /**
+     * Student.create({
+         name : "Vishwa",
+         age : 99
+    }).then()
+     */
     console.log(student);
 }catch(err){
     console.log(err);
