@@ -18,12 +18,45 @@ const addressSchema = new mongoose.Schema({
     pinCode : Number
 })
 const studentSchema = new mongoose.Schema({
-    name : String,
-    age : Number,
-    email : String,
-    createdAt : Date,
-    updatedAt : Date,
-    subjects : [String],
+    name : {
+         type : String,
+         required : true
+    },
+
+    age : {
+       type : Number,
+       min : 16
+    },
+    email : {
+        type : String,
+        required : true,
+        unique : true, // For we might have to write our custom validator
+        minLength : 10,
+        lowercase : true
+    },
+    createdAt : {
+        type : Date ,
+        immutable : true,
+        default : () => {
+            return Date.now();
+        }
+    },
+    updatedAt : {
+        type : Date,
+        default : () => {
+            return Date.now();
+        }
+
+    },
+    subjects : {
+        type : [String],
+        //custom validation
+        validate :  {
+            validator : s => s.length != 0,
+            message : props => "subject list can't be empty"
+        }                 
+    },
+
     address : addressSchema   // Embedded document
 });
 
