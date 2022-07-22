@@ -22,6 +22,8 @@
 
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
+const authConfig = require("../configs/auth.config")
 
 /**
  * Logic to accept the registration/signup
@@ -83,4 +85,61 @@ exports.signup = async (req, res)=>{
      }
      
 
+}
+
+/**
+ *   Logic to sign in
+ */
+
+exports.signin = async (req, res) => {
+   
+    /**
+     * If the userId passed is correct
+     */
+    try {
+    const user = await User.findOne({userId : req.body.userId});
+    if(user == null){
+        return res.status(400).send({
+            message : "Failed ! UserId passed doesn't exist"
+        });
+    }
+    /**
+     * If the password passed is correct
+     */
+    const passwordIsValid  =  bcrypt.compareSync(req.body.password, user.password);
+
+    if(!passwordIsValid){
+        return res.status(401).send({
+            message : "Wrong password"
+        });
+    }
+
+
+
+    /**
+     * Create the JWT token
+     */
+    const token =  jwt.sign({
+        id: user.userId
+    }, authConfig.secret, {
+        expiresIn : 600
+    });
+
+    /**
+     * Send the successfull login response
+     */
+    res.status(200).send({
+        name : user.name,
+        userId : user.userId,
+        email : user.email,
+        userType : user.userType,
+        userStatus : user.userStatus,
+        accessToken : token
+    });
+}catch(err){
+    console.log("Internal error , " , err.message);
+    res.status(500).send({
+        message : "Some internal error while signin"
+    });
+}
 }
