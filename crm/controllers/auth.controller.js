@@ -24,6 +24,8 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const authConfig = require("../configs/auth.config")
+const constants = require("../utils/constants");
+
 
 /**
  * Logic to accept the registration/signup
@@ -35,7 +37,7 @@ exports.signup = async (req, res)=>{
      /**
       * I need to read the data from the request body
       */
-      if(req.body.userType != "CUSTOMER"){
+      if(req.body.userType != constants.userTypes.customer){
           req.body.userStatus = "PENDING";
       }
 
