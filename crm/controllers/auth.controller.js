@@ -38,7 +38,7 @@ exports.signup = async (req, res)=>{
       * I need to read the data from the request body
       */
       if(req.body.userType != constants.userTypes.customer){
-          req.body.userStatus = "PENDING";
+          req.body.userStatus = constants.userStatus.pending;
       }
 
 

@@ -65,7 +65,7 @@ validateSignUpRequestBody = async (req, res, next) => {
     }
 
     if(req.body.userType == constants.userTypes.admin){
-        res.status(400).send({
+        return res.status(400).send({
             message : "ADMIN registartion is not allowed"
         }) 
     }
@@ -73,7 +73,7 @@ validateSignUpRequestBody = async (req, res, next) => {
     const userTypes = [constants.userTypes.customer, constants.userTypes.engineer ];
 
     if(!userTypes.includes(req.body.userType)){
-        res.status(400).send({
+        return res.status(400).send({
             message : "UserType provided is not correct. Possible correct values : CUSTOMER | ENGINEER"
         })
     }
