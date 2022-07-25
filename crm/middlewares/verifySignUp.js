@@ -4,7 +4,7 @@
 const User = require("../models/user.model");
 const constants = require("../utils/constants")
 
-validateSignUpRequestBody = async (req, res, next) => {
+const validateSignUpRequestBody = async (req, res, next) => {
 
     // Validate if name is present
     if (!req.body.name) {
