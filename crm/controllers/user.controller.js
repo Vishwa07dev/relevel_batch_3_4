@@ -9,7 +9,7 @@ const objectConverter = require("../utils/objectConverter");
  * Get the list of all the users 
  */
 exports.findAll = async (req, res) => {
-    
+
 
     const queryObj = {};
     /**
@@ -17,11 +17,11 @@ exports.findAll = async (req, res) => {
      */
     const userTypeQP = req.query.userType;
     const userStatusQP = req.query.userStatus;
-    if(userTypeQP){
+    if (userTypeQP) {
         queryObj.userType = userTypeQP;
     }
 
-    if(userStatusQP){
+    if (userStatusQP) {
         queryObj.userStatus = userStatusQP;
     }
 
@@ -37,5 +37,45 @@ exports.findAll = async (req, res) => {
         })
     }
 
+}
+/**
+ * This method will return the User details based on the id
+ */
+exports.findByUserId = async (req, res) => {
+
+    try {
+        const user = await User.find({ userId: req.params.id });
+        // user validation would have happened in the middleware itself
+        return res.status(200).send(objectConverter.userResponse(user));
+
+    } catch (err) {
+        console.log("Error while searching the user ", err);
+        return res.status(500).send({
+            message: "Internal Server Error"
+        })
+    }
+}
+
+exports.update = async (req, res) => {
+
+    try {
+        const user = await User.findOne({ userId: req.params.id });
+        user.userStatus = req.body.userStatus != undefined ? req.body.userStatus : user.userStatus;
+        user.name = req.body.name != undefined ? req.body.name : user.name;
+        user.userType = req.body.userType != undefined ? req.body.userType : user.userType;
+        const updatedUser = await user.save();
+        res.status(200).send({
+            name: updatedUser.name,
+            userId: updatedUser.userId,
+            email: updatedUser.email,
+            userType: updatedUser.userType,
+            userStatus: updatedUser.userStatus,
+        })
+    } catch (err) {
+        console.log("Error whileDB operation", err.message);
+        res.status(500).send({
+            message: "Internal server error"
+        })
+    }
 }
 

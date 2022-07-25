@@ -105,6 +105,15 @@ exports.signin = async (req, res) => {
             message : "Failed ! UserId passed doesn't exist"
         });
     }
+
+    /**
+     * Check if the user is in PENDING state
+     */
+    if(user.userStatus == constants.userStatus.pending){
+        return res.status(400).send({
+            message : "Not yet approved from the admin"
+        })
+    }
     /**
      * If the password passed is correct
      */
