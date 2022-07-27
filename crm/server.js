@@ -77,6 +77,7 @@ async function init() {
  */
 require("./routes/auth.route")(app); // this registers server with the route
 require("./routes/user.route")(app);
+require("./routes/ticket.route")(app);
 
 app.listen(serverConfig.PORT, () => {
     console.log("Started the server on the PORT number : ", serverConfig.PORT);

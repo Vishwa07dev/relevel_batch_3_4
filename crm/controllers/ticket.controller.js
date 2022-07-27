@@ -61,10 +61,9 @@ exports.createTicket = async  (req, res) => {
         if(ticketCreated){
 
             //Update the Customer document
-            const customer = User.findOne({
+            const customer = await User.findOne({
                 userId : req.userId
             });
-
             customer.ticketsCreated.push(ticketCreated._id);
             await customer.save()
             
@@ -83,6 +82,49 @@ exports.createTicket = async  (req, res) => {
             message: "Internal server error"
         })
     }
+
+
+}
+
+/**
+ * Getting all the tickets
+ */
+
+exports.getAllTickets = async (req, res) => {
+   
+    /**
+     * We need to find the userType
+     * and depending on the user type we need to frame the search query
+     */
+
+    const user = await User.findOne({userId : req.userId});
+    const queryObj = {};
+
+    if(user.userType == constants.userTypes.customer){
+       /**
+        *    Query for fetching all the tickets created by the user
+        * 
+        * */ 
+        const ticketsCreated = user.ticketsCreated ; // this is an array of ticket _id 
+        if(!ticketsCreated){
+            return res.staus(200).send({
+                message : "No tickets created by the user yet"
+            });
+        };
+
+        queryObj["_id"] = { $in : ticketsCreated};
+
+        console.log(queryObj);
+
+
+    }else if(user.userType == constants.userTypes.engineer){
+        /**
+         * Query object for fetching all the tickets assigned/created to a user
+         */
+         
+    }
+
+    const tickets = await Ticket.find(queryObj);
 
 
 }
