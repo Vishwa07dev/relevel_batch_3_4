@@ -99,13 +99,14 @@ exports.getAllTickets = async (req, res) => {
 
     const user = await User.findOne({userId : req.userId});
     const queryObj = {};
+    const ticketsCreated = user.ticketsCreated ; // this is an array of ticket _id 
+    const ticketsAssigned = user.ticketsAssigned ;   
 
     if(user.userType == constants.userTypes.customer){
        /**
         *    Query for fetching all the tickets created by the user
         * 
         * */ 
-        const ticketsCreated = user.ticketsCreated ; // this is an array of ticket _id 
         if(!ticketsCreated){
             return res.staus(200).send({
                 message : "No tickets created by the user yet"
@@ -121,10 +122,14 @@ exports.getAllTickets = async (req, res) => {
         /**
          * Query object for fetching all the tickets assigned/created to a user
          */
-         
+         queryObj["$or"] =  [{"_id" : {$in: ticketsCreated}}, {"_id" : {$in: ticketsAssigned}}];
+
+         console.log(queryObj);
     }
 
     const tickets = await Ticket.find(queryObj);
+
+    res.status(200).send(tickets);
 
 
 }

@@ -15,4 +15,9 @@ module.exports = (app) => {
     * Add the middleware for the validation of the request body
     */
     app.post("/crm/api/v1/tickets/", [authJwt.verifyToken],ticketController.createTicket);
+
+    /**
+     * GET /crm/api/vi/tickets
+     */
+    app.get("/crm/api/v1/tickets/", [authJwt.verifyToken], ticketController.getAllTickets);
 }
