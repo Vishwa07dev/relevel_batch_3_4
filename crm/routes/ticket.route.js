@@ -2,7 +2,7 @@
  * Route logic for the ticket resource
  */
 const ticketController = require("../controllers/ticket.controller");
-const {authJwt} = require("../middlewares");
+const {authJwt, validateTicket} = require("../middlewares");
 
 module.exports = (app) => {
 
@@ -20,4 +20,9 @@ module.exports = (app) => {
      * GET /crm/api/vi/tickets
      */
     app.get("/crm/api/v1/tickets/", [authJwt.verifyToken], ticketController.getAllTickets);
+
+    /**
+     * PUT /crm/api/v1/tickets/:id
+     */
+    app.put("/crm/api/v1/tickets/:id", [authJwt.verifyToken, validateTicket.isValidOwnerOfTheTicket], ticketController.updateTicket);
 }
