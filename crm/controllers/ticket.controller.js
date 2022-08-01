@@ -5,6 +5,7 @@
 const constants = require("../utils/constants");
 const Ticket = require("../models/ticket.model");
 const User = require("../models/user.model");
+const sendNotificationReq = require("../utils/notificationClient");
 
 
 /**
@@ -18,6 +19,9 @@ const User = require("../models/user.model");
  * 
  * 3. After the ticket is created, ensure the customer and Engineer documents are
  * also updated
+ * 
+ * 
+ * 4. Send the email after the ticket is created to all the stake hodlers
  *     
  */
 
@@ -72,6 +76,12 @@ exports.createTicket = async (req, res) => {
                 engineer.ticketsAssigned.push(ticketCreated._id);
                 await engineer.save();
             }
+
+            //Now we should send the notification request to notificationService
+            /**
+             * Enrich the content of the email content
+             */
+            sendNotificationReq(`Ticket created with id : ${ticketCreated._id}` , "Yay ! Movie ticket has bee booked",`${ticketCreated.reporter},${ticketCreated.assignee},kankvish@gmail.com`, "CRM APP");
 
             res.status(201).send(ticketCreated);
         }
