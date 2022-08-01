@@ -1,7 +1,7 @@
 /**
  * Define the schema for the notification model
  */
-const mongoose = require("mongooose");
+const mongoose = require("mongoose");
 
 
 const notificationSchema = new mongoose.Schema({
@@ -26,9 +26,9 @@ const notificationSchema = new mongoose.Schema({
      * Move this string literal to the Utils module
      */
     status: {
-        tyep: String,
+        type: String,
         default: "UN_SENT",
-        enum: ['SENT', 'UN_SENT']
+        enum: ["SENT", "UN_SENT"]
     },
     createdAt: {
         type: Date,
