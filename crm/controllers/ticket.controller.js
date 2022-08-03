@@ -81,7 +81,7 @@ exports.createTicket = async (req, res) => {
             /**
              * Enrich the content of the email content
              */
-            sendNotificationReq(`Ticket created with id : ${ticketCreated._id}` , "Yay ! Movie ticket has bee booked",`${ticketCreated.reporter},${ticketCreated.assignee},kankvish@gmail.com`, "CRM APP");
+            sendNotificationReq(`Ticket created with id : ${ticketCreated._id}`, "Yay ! Movie ticket has bee booked", `${engineer.email},${customer.email},kankvish@gmail.com`, "CRM APP");
 
             res.status(201).send(ticketCreated);
         }
@@ -169,7 +169,7 @@ exports.updateTicket = async (req, res) => {
         const updatedTicket = await ticket.save();
 
         res.status(200).send(updatedTicket);
-    
+
     } catch (err) {
         console.log("Some error while updating ticket ", err.message);
         res.status(500).send({
