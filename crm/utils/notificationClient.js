@@ -4,7 +4,7 @@
 
 const Client = require("node-rest-client").Client;
 
-const client = Client(); // This is the client object which will be used for calling the REST APIs
+const client = new Client(); // This is the client object which will be used for calling the REST APIs
 
 
 /**
