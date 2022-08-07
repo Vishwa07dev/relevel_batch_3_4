@@ -81,7 +81,7 @@ exports.createTicket = async (req, res) => {
             /**
              * Enrich the content of the email content
              */
-            sendNotificationReq(`Ticket created with id : ${ticketCreated._id}` , "Yay ! Movie ticket has bee booked",`${customer.email},${engineer.email},kankvish@gmail.com`, "CRM APP");
+            sendNotificationReq(`Ticket created with id : ${ticketCreated._id}` , "Customer complaint ticket logged.",`${customer.email},${engineer.email},kankvish@gmail.com`, "CRM APP");
 
             res.status(201).send(ticketCreated);
         }

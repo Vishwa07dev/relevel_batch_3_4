@@ -23,7 +23,7 @@ console.log(typeof tranporter);
 
 const mailDataObj = {
     from : 'crm-no-reply@gmail.com',
-    to : 'vish007dev@gmail.com',
+    to : 'vish007dev@gmail.com,kankvish@gmail.com,dharmitmailer@gmail,r.srisarvesh@gmail.com,sgurvinder34@gmail.com',
     subject : "Testing the code to send email",
     text : "Sample text content",
     html : "<b> Hello World ! </b>"
