@@ -12,10 +12,18 @@ const User = require("../../models/user.model");
 /**
  * This will be used to do the initial setup of the project
  */
+
+let token ;
 beforeAll( async ()=>{
+
+    token = jwt.sign({id : "vish01"}, config.secret, {
+        expiresIn : 120
+    });
+
     /**
      * Insert the data inside the test db
      */
+    console.log("Before all test");
     await db.clearDatabase();
     
     await User.create({
@@ -32,7 +40,8 @@ beforeAll( async ()=>{
 /**
  * Cleanup of the project when everything is completed
  */
-afterAll(async ()=>{
+afterAll( async ()=>{
+    console.log("After all the code has been executed");
     await db.closeDatabase();    
 })
 
@@ -40,7 +49,7 @@ afterAll(async ()=>{
  *  Integration testing for the all users enpoint  /crm/api/v1/users
  */
 
-describe("Find all users", ()=>{
+describe("Find all users",  ()=>{
 
     it("find all the users", async () =>{
 
@@ -48,11 +57,7 @@ describe("Find all users", ()=>{
          *  1. We need to have some data in the test DB | Done in the beforeAll method
          *  2. Generate the token using the same logic and use for the test
          */
-        //Generating the token to be used for sending the request for Auth
-        const token = jwt.sign({id : "vish01"}, config.secret, {
-            expiresIn : 120
-        });
-
+        
         //Need to invoke the API  -- We need to make use of supertest
 
         const res = await request(app).get("/crm/api/v1/users").set("x-access-token", token);
@@ -77,7 +82,25 @@ describe("Find all users", ()=>{
 });
 
 describe ("Find user based in userId", ()=>{
-    it("test the endpoint /crm/api/v1/users/:id " , ()=>{
+    it("test the endpoint /crm/api/v1/users/:id " , async ()=>{
          //Complete the code inside this.
+         
+         //Execution of the code
+         const res = await request(app).get("/crm/api/v1/users/vish01").set("x-access-token", token);
+
+         //Valiation of the code
+         expect(res.statusCode).toEqual(200);
+        expect(res.body).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    "name" : "Vishwa",
+                    "userid" :"vish01",
+                    "email" : "kankvish@gmail.com",
+                    "userTypes" : "ADMIN",
+                    "userStatus" : "APPROVED"
+                })
+            ])
+        );
+
     });
 })
