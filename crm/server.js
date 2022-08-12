@@ -26,7 +26,7 @@ db.on("error", () => {
 });
 db.once("open", () => {
     console.log("Connected to mongoDB");
-    init();
+    //init();
 });
 
 /**
@@ -79,6 +79,10 @@ require("./routes/auth.route")(app); // this registers server with the route
 require("./routes/user.route")(app);
 require("./routes/ticket.route")(app);
 
-app.listen(serverConfig.PORT, () => {
+
+/**
+ * So this can be used for the integration testing
+ */
+module.exports = app.listen(serverConfig.PORT, () => {
     console.log("Started the server on the PORT number : ", serverConfig.PORT);
 });
