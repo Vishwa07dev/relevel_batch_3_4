@@ -60,7 +60,24 @@ describe("Find all users", ()=>{
 
         //Code for the validation
         expect(res.statusCode).toEqual(200);
+        expect(res.body).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    "name" : "Vishwa",
+                    "userid" :"vish01",
+                    "email" : "kankvish@gmail.com",
+                    "userTypes" : "ADMIN",
+                    "userStatus" : "APPROVED"
+                })
+            ])
+        )
 
     })
 
+});
+
+describe ("Find user based in userId", ()=>{
+    it("test the endpoint /crm/api/v1/users/:id " , ()=>{
+         //Complete the code inside this.
+    });
 })
